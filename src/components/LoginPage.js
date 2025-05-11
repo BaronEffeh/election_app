@@ -1,97 +1,192 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import {
   Box,
-  Grid,
-  Card,
-  CardContent,
+  // Grid,
   Typography,
   TextField,
-  Button
+  Button,
+  Paper
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import BgImg from '../assets/bg-img.png';  // ✅ Your background image
-import Logo from '../assets/BSA_logo.png';     // ✅ Your logo image
+import Logo from '../assets/BSA_logo.png'; // ✅ update with correct logo path
+import LoginImage from '../assets/bg-img.png'; // ✅ update with correct image path
 
-export default function LoginPage() {
-  const [serialNumber, setSerialNumber] = useState('');
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const success = await login(serialNumber);
-    if (success) navigate('/dashboard');
-  };
-
+export default function Login() {
   return (
-    <Grid container sx={{ minHeight: '100vh' }}>
-      {/* Left image side */}
-      <Grid item xs={12} md={6}>
-        <Box
-          sx={{
-            height: '100vh',
-            width: '100%',
-            backgroundImage: `url(${BgImg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
-      </Grid>
+    <Box sx={{ minHeight: '100vh', display: 'flex' }}>
+      {/* Left side image */}
+      <Box
+        sx={{
+          width: '50%',
+          display: { xs: 'none', md: 'block' },
+          backgroundImage: `url(${LoginImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
 
-      {/* Right login side */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ backgroundColor: '#fdfdfd' }}
+      {/* Right side form */}
+      <Box
+        sx={{
+          width: { xs: '100%', md: '50%' },
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#fff',
+          p: 3,
+        }}
       >
-        <Card sx={{ width: '80%', maxWidth: 400, boxShadow: 3 }}>
-          <CardContent>
-            <Box display="flex" justifyContent="center" mb={2}>
-              <img
-                src={Logo}
-                alt="School Logo"
-                style={{ width: 50, height: 50, objectFit: 'contain' }}
-              />
-            </Box>
-            <Typography variant="h6" align="center" gutterBottom>
-              Britarch Schools, Abuja<br />
+        <Paper
+          elevation={3}
+          sx={{
+            width: '100%',
+            maxWidth: 400,
+            p: 4,
+            borderRadius: 4,
+            textAlign: 'center',
+          }}
+        >
+          <Box mb={2}>
+            <img src={Logo} alt="Logo" style={{ width: 50, marginBottom: 10 }} />
+            <Typography variant="subtitle1" fontWeight="bold">
+              Britarch Schools, Abuja
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 2 }}>
               Election Portal
             </Typography>
+          </Box>
 
-            <Typography variant="subtitle1" gutterBottom>
-              Login
-            </Typography>
+          <Typography variant="h6" fontWeight="600" align="left" mb={2}>
+            Login
+          </Typography>
 
-            <form onSubmit={handleSubmit}>
-              <TextField
-                fullWidth
-                label="Serial Number"
-                margin="normal"
-                value={serialNumber}
-                onChange={(e) => setSerialNumber(e.target.value)}
-                required
-              />
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                sx={{ mt: 2, backgroundColor: '#FFD700', color: 'black' }}
-              >
-                Verify ID
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+          <TextField
+            fullWidth
+            label="Serial Number"
+            placeholder="Enter serial number"
+            variant="outlined"
+            sx={{ mb: 3 }}
+          />
+
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{
+              backgroundColor: '#FFD700',
+              color: '#000',
+              fontWeight: 'bold',
+              py: 1.5,
+              borderRadius: 2,
+              '&:hover': {
+                backgroundColor: '#FFEB3B',
+              },
+            }}
+          >
+            Verify ID
+          </Button>
+        </Paper>
+      </Box>
+    </Box>
   );
 }
+
+
+
+
+
+// import React, { useState, useContext } from 'react';
+// import {
+//   Box,
+//   Grid,
+//   Card,
+//   CardContent,
+//   Typography,
+//   TextField,
+//   Button
+// } from '@mui/material';
+// import { useNavigate } from 'react-router-dom';
+// import { AuthContext } from '../context/AuthContext';
+// import BgImg from '../assets/bg-img.png';  // ✅ Your background image
+// import Logo from '../assets/BSA_logo.png';     // ✅ Your logo image
+
+// export default function LoginPage() {
+//   const [serialNumber, setSerialNumber] = useState('');
+//   const { login } = useContext(AuthContext);
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const success = await login(serialNumber);
+//     if (success) navigate('/dashboard');
+//   };
+
+//   return (
+//     <Grid container sx={{ minHeight: '100vh' }}>
+//       {/* Left image side */}
+//       <Grid item xs={12} md={6}>
+//         <Box
+//           sx={{
+//             height: '100vh',
+//             width: '100%',
+//             backgroundImage: `url(${BgImg})`,
+//             backgroundSize: 'cover',
+//             backgroundPosition: 'center',
+//             backgroundRepeat: 'no-repeat',
+//           }}
+//         />
+//       </Grid>
+
+//       {/* Right login side */}
+//       <Grid
+//         item
+//         xs={12}
+//         md={6}
+//         display="flex"
+//         alignItems="center"
+//         justifyContent="center"
+//         sx={{ backgroundColor: '#fdfdfd' }}
+//       >
+//         <Card sx={{ width: '80%', maxWidth: 400, boxShadow: 3 }}>
+//           <CardContent>
+//             <Box display="flex" justifyContent="center" mb={2}>
+//               <img
+//                 src={Logo}
+//                 alt="School Logo"
+//                 style={{ width: 50, height: 50, objectFit: 'contain' }}
+//               />
+//             </Box>
+//             <Typography variant="h6" align="center" gutterBottom>
+//               Britarch Schools, Abuja<br />
+//               Election Portal
+//             </Typography>
+
+//             <Typography variant="subtitle1" gutterBottom>
+//               Login
+//             </Typography>
+
+//             <form onSubmit={handleSubmit}>
+//               <TextField
+//                 fullWidth
+//                 label="Serial Number"
+//                 margin="normal"
+//                 value={serialNumber}
+//                 onChange={(e) => setSerialNumber(e.target.value)}
+//                 required
+//               />
+//               <Button
+//                 fullWidth
+//                 type="submit"
+//                 variant="contained"
+//                 sx={{ mt: 2, backgroundColor: '#FFD700', color: 'black' }}
+//               >
+//                 Verify ID
+//               </Button>
+//             </form>
+//           </CardContent>
+//         </Card>
+//       </Grid>
+//     </Grid>
+//   );
+// }
 
 
 

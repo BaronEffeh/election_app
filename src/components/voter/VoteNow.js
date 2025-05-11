@@ -11,9 +11,9 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
-  List,
-  ListItem,
-  ListItemText,
+  // List,
+  // ListItem,
+  // ListItemText,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -22,18 +22,20 @@ import {
 import { useNavigate } from 'react-router-dom';
 import IconComplete from '../../assets/check-icon.png';
 // import IconComplete from '../../assets/icon-complete.svg';
+import MaleImg from '../../assets/male_candidate.jpg';
+import FemaleImg from '../../assets/femal_candidate.jpeg';
 
 const dummyCandidates = [
-    { id: 1, name: 'Anthony Sport', position: 'Sport Prefect' },
-    { id: 2, name: 'Kolade', position: 'Sport Prefect' },
-    { id: 3, name: 'Blessing Metron', position: 'Hostel Prefect (Girls)' },
-    { id: 4, name: 'Blessing Nurse', position: 'Hostel Prefect (Girls)' },
-    { id: 5, name: 'Uko Daniel', position: 'Hostel Prefect (Boys)' },
-    { id: 6, name: 'Mosses', position: 'Hostel Prefect (Boys)' },
-    { id: 7, name: 'Adediran Briget', position: 'Head Girl' },
-    { id: 8, name: 'Ogechi', position: 'Head Girl' },
-    { id: 9, name: 'George Ibit', position: 'Head Boy' },
-    { id: 10, name: 'Barnabas Ngor', position: 'Head Boy' },
+    { id: 1, name: 'Anthony Sport', position: 'Sport Prefect', img: MaleImg },
+    { id: 2, name: 'Kolade', position: 'Sport Prefect', img: MaleImg },
+    { id: 3, name: 'Blessing Metron', position: 'Hostel Prefect (Girls)', img: FemaleImg },
+    { id: 4, name: 'Blessing Nurse', position: 'Hostel Prefect (Girls)', img: FemaleImg },
+    { id: 5, name: 'Uko Daniel', position: 'Hostel Prefect (Boys)', img: MaleImg },
+    { id: 6, name: 'Mosses', position: 'Hostel Prefect (Boys)', img: MaleImg },
+    { id: 7, name: 'Adediran Briget', position: 'Head Girl', img: FemaleImg },
+    { id: 8, name: 'Ogechi', position: 'Head Girl', img: FemaleImg },
+    { id: 9, name: 'George Ibit', position: 'Head Boy', img: MaleImg },
+    { id: 10, name: 'Barnabas Ngor', position: 'Head Boy', img: MaleImg },
 ];
 
 // Group candidates by position
@@ -136,13 +138,15 @@ return (
                         label={
                           <Box display="flex" alignItems="center">
                             <img
-                              src="https://randomuser.me/api/portraits/women/44.jpg" // Placeholder avatar
+                              // src="https://randomuser.me/api/portraits/women/44.jpg" // Placeholder avatar
+                              src={candidate.img} // Placeholder avatar
                               alt={candidate.name}
                               style={{
                                 width: 35,
                                 height: 35,
                                 borderRadius: '50%',
                                 marginRight: 12,
+                                objectFit: 'cover'
                               }}
                             />
                             <Typography variant="body1">{candidate.name}</Typography>
@@ -182,39 +186,110 @@ return (
             </>
           ) : (
             <>
-              <Typography variant="h5" align="center" gutterBottom>
-                Review Your Votes
-              </Typography>
-              <List>
-                {positions.map((position) => (
-                  <ListItem key={position}>
-                    <ListItemText
-                      primary={position}
-                      secondary={votes[position] || 'No vote cast'}
-                    />
-                  </ListItem>
-                ))}
-              </List>
+  <Typography variant="h6" fontWeight="bold" mb={1}>
+    Review Votes
+  </Typography>
+  <Box height="2px" width="100%" bgcolor="#EDEDED" mb={3} />
 
-              <Box display="flex" justifyContent="space-between" mt={3}>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    setIsReviewing(false);
-                    setCurrentPositionIndex(positions.length - 1);
-                  }}
-                >
-                  Back to Last Vote
-                </Button>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleFinalSubmit}
-                >
-                  Confirm & Submit
-                </Button>
-              </Box>
-            </>
+  <Box>
+    {positions.map((position) => {
+      const candidateName = votes[position];
+      const candidate = grouped[position].find(c => c.name === candidateName);
+
+      return (
+        <Box key={position} mb={3}>
+          <Typography variant="subtitle1" fontWeight="500">{position}</Typography>
+          {candidate ? (
+            <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+              <img
+                src={candidate.img}
+                alt={candidate.name}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  objectFit: 'cover'
+                }}
+              />
+              <Typography>{candidate.name}</Typography>
+            </Box>
+          ) : (
+            <Typography color="text.secondary" fontStyle="italic">No vote cast</Typography>
+          )}
+        </Box>
+      );
+    })}
+  </Box>
+
+  <Box display="flex" justifyContent="space-between" mt={4}>
+    <Button
+      variant="outlined"
+      onClick={() => {
+        setIsReviewing(false);
+        setCurrentPositionIndex(positions.length - 1);
+      }}
+      sx={{
+        borderRadius: '8px',
+        textTransform: 'none',
+        px: 4
+      }}
+    >
+      Back
+    </Button>
+    <Button
+      variant="contained"
+      onClick={handleFinalSubmit}
+      sx={{
+        backgroundColor: '#FFD700',
+        color: '#000',
+        borderRadius: '8px',
+        textTransform: 'none',
+        px: 4,
+        '&:hover': {
+          backgroundColor: '#FFEB3B'
+        }
+      }}
+    >
+      Submit
+    </Button>
+  </Box>
+</>
+
+
+            // <>
+            //   <Typography variant="h5" align="center" gutterBottom>
+            //     Review Your Votes
+            //   </Typography>
+            //   <List>
+            //     {positions.map((position) => (
+            //       <ListItem key={position}>
+            //         <ListItemText
+            //           primary={position}
+            //           secondary={votes[position] || 'No vote cast'}
+            //         />
+            //       </ListItem>
+            //     ))}
+            //   </List>
+
+            //   <Box display="flex" justifyContent="space-between" mt={3}>
+            //     <Button
+            //       variant="outlined"
+            //       onClick={() => {
+            //         setIsReviewing(false);
+            //         setCurrentPositionIndex(positions.length - 1);
+            //       }}
+            //     >
+            //       Back to Last Vote
+            //     </Button>
+            //     <Button
+            //       variant="contained"
+            //       color="success"
+            //       onClick={handleFinalSubmit}
+            //     >
+            //       Confirm & Submit
+            //     </Button>
+            //   </Box>
+            // </>
           )}
         </CardContent>
       </Card>
