@@ -8,6 +8,7 @@ import {
   Grid,
   Paper,
 } from '@mui/material';
+import AdminLayout from '../layout/AdminLayout';
 
 export default function ManageElection() {
   const [startTime, setStartTime] = useState('');
@@ -81,6 +82,7 @@ export default function ManageElection() {
   };
 
   return (
+    <AdminLayout>
     <Container maxWidth="md">
       <Box mt={5} component={Paper} p={4}>
         <Typography variant="h5" mb={2}>Manage Election</Typography>
@@ -143,5 +145,6 @@ export default function ManageElection() {
         </Box>
       </Box>
     </Container>
+    </AdminLayout>
   );
 }

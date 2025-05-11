@@ -20,7 +20,8 @@ import {
   DialogActions
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import IconComplete from '../../assets/icon-complete.svg';
+import IconComplete from '../../assets/check-icon.png';
+// import IconComplete from '../../assets/icon-complete.svg';
 
 const dummyCandidates = [
     { id: 1, name: 'Anthony Sport', position: 'Sport Prefect' },
@@ -237,8 +238,17 @@ return (
             onClick={() => navigate('/')}
             variant="contained"
             autoFocus
+            sx={{
+              backgroundColor: '#FFD700', 
+              color: '#000', 
+              pl: 5, 
+              pr: 5,
+              '&:hover': {
+                      backgroundColor: '#FFE452',
+                    },
+            }}
           >
-            OK
+            Logout
           </Button>
         </DialogActions>
       </Dialog>
