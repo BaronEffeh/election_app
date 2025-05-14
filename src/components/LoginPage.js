@@ -1,16 +1,38 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
-  // Grid,
   Typography,
   TextField,
   Button,
   Paper
 } from '@mui/material';
-import Logo from '../assets/BSA_logo.png'; // ✅ update with correct logo path
-import LoginImage from '../assets/bg-img.png'; // ✅ update with correct image path
+import { useNavigate } from 'react-router-dom';
+import Logo from '../assets/BSA_logo.png';
+import LoginImage from '../assets/bg-img.png';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {
+  const [serialNumber, setSerialNumber] = useState('');
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!serialNumber.trim()) {
+      alert('Please enter a serial number.');
+      return;
+    }
+
+    const success = await login(serialNumber);
+
+    if (success) {
+      navigate('/dashboard');
+    } else {
+      alert('Invalid serial number.');
+    }
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex' }}>
       {/* Left side image */}
@@ -59,35 +81,254 @@ export default function Login() {
             Login
           </Typography>
 
-          <TextField
-            fullWidth
-            label="Serial Number"
-            placeholder="Enter serial number"
-            variant="outlined"
-            sx={{ mb: 3 }}
-          />
+          {/* Wrap form elements in a <form> */}
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Serial Number"
+              placeholder="Enter serial number"
+              variant="outlined"
+              value={serialNumber}
+              onChange={(e) => setSerialNumber(e.target.value)}
+              sx={{ mb: 3 }}
+            />
 
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              backgroundColor: '#FFD700',
-              color: '#000',
-              fontWeight: 'bold',
-              py: 1.5,
-              borderRadius: 2,
-              '&:hover': {
-                backgroundColor: '#FFEB3B',
-              },
-            }}
-          >
-            Verify ID
-          </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              type="submit"
+              sx={{
+                backgroundColor: '#FFD700',
+                color: '#000',
+                fontWeight: 'bold',
+                py: 1.5,
+                borderRadius: 2,
+                '&:hover': {
+                  backgroundColor: '#FFEB3B',
+                },
+              }}
+            >
+              Verify ID
+            </Button>
+          </form>
         </Paper>
       </Box>
     </Box>
   );
 }
+
+
+
+
+
+// import React, { useState, useContext } from 'react';
+// import {
+//   Box,
+//   Typography,
+//   TextField,
+//   Button,
+//   Paper
+// } from '@mui/material';
+// import { useNavigate } from 'react-router-dom';
+// import Logo from '../assets/BSA_logo.png';
+// import LoginImage from '../assets/bg-img.png';
+// import { AuthContext } from '../context/AuthContext';
+
+// export default function Login() {
+//   const [serialNumber, setSerialNumber] = useState('');
+//   const { login } = useContext(AuthContext);
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async () => {
+//     if (!serialNumber.trim()) {
+//       alert('Please enter a serial number.');
+//       return;
+//     }
+
+//     const success = await login(serialNumber);
+
+//     if (success) {
+//       navigate('/dashboard');
+//     } else {
+//       alert('Invalid serial number.');
+//     }
+//   };
+
+//   return (
+//     <Box sx={{ minHeight: '100vh', display: 'flex' }}>
+//       {/* Left side image */}
+//       <Box
+//         sx={{
+//           width: '50%',
+//           display: { xs: 'none', md: 'block' },
+//           backgroundImage: `url(${LoginImage})`,
+//           backgroundSize: 'cover',
+//           backgroundPosition: 'center',
+//         }}
+//       />
+
+//       {/* Right side form */}
+//       <Box
+//         sx={{
+//           width: { xs: '100%', md: '50%' },
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//           backgroundColor: '#fff',
+//           p: 3,
+//         }}
+//       >
+//         <Paper
+//           elevation={3}
+//           sx={{
+//             width: '100%',
+//             maxWidth: 400,
+//             p: 4,
+//             borderRadius: 4,
+//             textAlign: 'center',
+//           }}
+//         >
+//           <Box mb={2}>
+//             <img src={Logo} alt="Logo" style={{ width: 50, marginBottom: 10 }} />
+//             <Typography variant="subtitle1" fontWeight="bold">
+//               Britarch Schools, Abuja
+//             </Typography>
+//             <Typography variant="body2" sx={{ mb: 2 }}>
+//               Election Portal
+//             </Typography>
+//           </Box>
+
+//           <Typography variant="h6" fontWeight="600" align="left" mb={2}>
+//             Login
+//           </Typography>
+
+//           <TextField
+//             fullWidth
+//             label="Serial Number"
+//             placeholder="Enter serial number"
+//             variant="outlined"
+//             value={serialNumber}
+//             onChange={(e) => setSerialNumber(e.target.value)}
+//             sx={{ mb: 3 }}
+//           />
+
+//           <Button
+//             fullWidth
+//             variant="contained"
+//             onClick={handleSubmit}
+//             sx={{
+//               backgroundColor: '#FFD700',
+//               color: '#000',
+//               fontWeight: 'bold',
+//               py: 1.5,
+//               borderRadius: 2,
+//               '&:hover': {
+//                 backgroundColor: '#FFEB3B',
+//               },
+//             }}
+//           >
+//             Verify ID
+//           </Button>
+//         </Paper>
+//       </Box>
+//     </Box>
+//   );
+// }
+
+
+
+
+
+// import React from 'react';
+// import {
+//   Box,
+//   // Grid,
+//   Typography,
+//   TextField,
+//   Button,
+//   Paper
+// } from '@mui/material';
+// import Logo from '../assets/BSA_logo.png';
+// import LoginImage from '../assets/bg-img.png';
+
+// export default function Login() {
+//   return (
+//     <Box sx={{ minHeight: '100vh', display: 'flex' }}>
+//       {/* Left side image */}
+//       <Box
+//         sx={{
+//           width: '50%',
+//           display: { xs: 'none', md: 'block' },
+//           backgroundImage: `url(${LoginImage})`,
+//           backgroundSize: 'cover',
+//           backgroundPosition: 'center',
+//         }}
+//       />
+
+//       {/* Right side form */}
+//       <Box
+//         sx={{
+//           width: { xs: '100%', md: '50%' },
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//           backgroundColor: '#fff',
+//           p: 3,
+//         }}
+//       >
+//         <Paper
+//           elevation={3}
+//           sx={{
+//             width: '100%',
+//             maxWidth: 400,
+//             p: 4,
+//             borderRadius: 4,
+//             textAlign: 'center',
+//           }}
+//         >
+//           <Box mb={2}>
+//             <img src={Logo} alt="Logo" style={{ width: 50, marginBottom: 10 }} />
+//             <Typography variant="subtitle1" fontWeight="bold">
+//               Britarch Schools, Abuja
+//             </Typography>
+//             <Typography variant="body2" sx={{ mb: 2 }}>
+//               Election Portal
+//             </Typography>
+//           </Box>
+
+//           <Typography variant="h6" fontWeight="600" align="left" mb={2}>
+//             Login
+//           </Typography>
+
+//           <TextField
+//             fullWidth
+//             label="Serial Number"
+//             placeholder="Enter serial number"
+//             variant="outlined"
+//             sx={{ mb: 3 }}
+//           />
+
+//           <Button
+//             fullWidth
+//             variant="contained"
+//             sx={{
+//               backgroundColor: '#FFD700',
+//               color: '#000',
+//               fontWeight: 'bold',
+//               py: 1.5,
+//               borderRadius: 2,
+//               '&:hover': {
+//                 backgroundColor: '#FFEB3B',
+//               },
+//             }}
+//           >
+//             Verify ID
+//           </Button>
+//         </Paper>
+//       </Box>
+//     </Box>
+//   );
+// }
 
 
 
