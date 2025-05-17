@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   TextField,
   Button,
   Box,
-  Paper
+  Divider
 } from '@mui/material';
 import AdminLayout from '../layout/AdminLayout';
 
@@ -34,21 +34,21 @@ export default function ManageElection() {
   return (
     <AdminLayout>
       <Box sx={{ p: 3 }}>
-        <Typography variant="h6" fontWeight="bold" mb={3}>
+        <Typography variant="h6" fontWeight="bold" mb={1}>
           Manage Elections
         </Typography>
+        <Divider sx={{ mb: 3 }} />
 
-        <Paper sx={{ p: 3, borderRadius: 3 }}>
-
-          {/* Set Election Date Row */}
-          <Box
-            display="flex"
-            alignItems="center"
-            gap={2}
-            mb={3}
-            flexWrap="wrap"
-          >
-            <Typography sx={{ minWidth: 160 }}>Set Election Date</Typography>
+        {/* Set Election Date Row */}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          flexWrap="wrap"
+          mb={2}
+        >
+          <Typography sx={{ minWidth: 160 }}>Set Election Date</Typography>
+          <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
             <TextField
               type="date"
               size="small"
@@ -76,15 +76,19 @@ export default function ManageElection() {
               Set
             </Button>
           </Box>
+        </Box>
 
-          {/* Election Process Row */}
-          <Box
-            display="flex"
-            alignItems="center"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <Typography sx={{ minWidth: 160 }}>Election Process</Typography>
+        <Divider sx={{ my: 3 }} />
+
+        {/* Election Process Row */}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          flexWrap="wrap"
+        >
+          <Typography sx={{ minWidth: 160 }}>Election Process</Typography>
+          <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
             <TextField
               type="time"
               size="small"
@@ -107,7 +111,7 @@ export default function ManageElection() {
               Start
             </Button>
           </Box>
-        </Paper>
+        </Box>
       </Box>
     </AdminLayout>
   );

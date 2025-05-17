@@ -12,6 +12,7 @@ import ViewVoters from './components/admin/ViewVoters';
 import ManageElection from './components/admin/ManageElection';
 import VoteNow from './components/voter/VoteNow';
 import { AuthProvider } from './context/AuthContext';
+import ElectionReport from './components/admin/ElectionReport';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/view-candidates" element={<ViewCandidates />} />
           <Route path="/view-voters" element={<ViewVoters />} />
           <Route path="/manage-election" element={<ManageElection />} />
+          <Route path="/election-report" element={<ElectionReport />} />
           <Route path="/vote-now" element={<VoteNow />} />
         </Routes>
       </Router>
