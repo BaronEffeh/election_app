@@ -69,7 +69,7 @@ export default function ViewCandidates() {
 
   return (
     <AdminLayout>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" height="100vh" overflowY="none">
         <Box display="flex" justifyContent="space-between" alignItems="center" my={4}>
           <Typography variant="h6" fontWeight="bold">Candidates</Typography>
           <Button
@@ -104,7 +104,51 @@ export default function ViewCandidates() {
           }}
         />
 
-        <TableContainer sx={{ borderRadius: 2 }}>
+        {/* <TableContainer sx={{ borderRadius: 2 }}> */}
+        <TableContainer
+          sx={{
+            borderRadius: 2,
+            maxHeight: 400,
+            overflowY: 'auto',
+          }}
+        >
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: '#FAFAFA' }}>
+                <TableCell><strong>Photo</strong></TableCell>
+                <TableCell><strong>Name</strong></TableCell>
+                <TableCell><strong>Position</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredCandidates.map((candidate) => (
+                <TableRow
+                  key={candidate.id}
+                  sx={{
+                    backgroundColor: candidate.id % 2 === 0 ? '#FAFAFA' : ''
+                  }}
+                >
+                  <TableCell>
+                    <Avatar
+                      alt={candidate.name}
+                      src={candidate.photo || "https://randomuser.me/api/portraits/women/44.jpg"}
+                    />
+                  </TableCell>
+                  <TableCell>{candidate.name}</TableCell>
+                  <TableCell>{candidate.position}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {/* <TableContainer
+          sx={{
+            borderRadius: 2,
+            maxHeight: 400, // adjust as needed
+            overflowY: 'auto'
+          }}
+        >
           <Table>
             <TableHead sx={{ backgroundColor: '#FAFAFA' }}>
               <TableRow>
@@ -132,7 +176,7 @@ export default function ViewCandidates() {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
 
         {/* Modal */}
         <Dialog open={open} onClose={handleClose}>

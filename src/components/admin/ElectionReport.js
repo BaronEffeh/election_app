@@ -132,6 +132,7 @@ export default function ElectionReport() {
                         <LabelList
                           dataKey="votes"
                           position="right"
+                          fontWeight="700"
                           formatter={(val) => `${val} (${((val / totalVotes) * 100).toFixed(1)}%)`}
                         />
                         {chartWithColors.map((entry, idx) => (

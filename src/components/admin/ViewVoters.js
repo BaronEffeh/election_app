@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TableContainer,
   Table,
   TableHead,
   TableRow,
@@ -20,6 +21,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import AdminLayout from '../layout/AdminLayout';
 
 const dummyVoters = [
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
+  { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
   { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
   { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
   { name: 'Adeleke Hussein Chidinma Sapphire', class: 'Upper class 1', serial: 'S/22/0045' },
@@ -74,8 +83,14 @@ export default function ViewVoters() {
             Add Voter
           </Button>
         </Box>
-
-        <Table>
+      <TableContainer
+          sx={{
+            borderRadius: 2,
+            maxHeight: 400,
+            overflowY: 'auto'
+          }}
+        >
+        <Table stickyHeader>
           <TableHead sx={{ backgroundColor: '#FAFAFA' }}>
             <TableRow>
               <TableCell><strong>Name</strong></TableCell>
@@ -99,6 +114,7 @@ export default function ViewVoters() {
             ))}
           </TableBody>
         </Table>
+        </TableContainer>
       </Box>
 
       <Dialog open={open} onClose={handleClose}>

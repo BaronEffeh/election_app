@@ -106,7 +106,7 @@ export default function VoteNow() {
 
 return (
   <Container maxWidth="sm">
-    <Box mt={8}>
+    <Box mt={6}>
       <Card sx={{ borderRadius: 4, p: 3, boxShadow: 3 }}>
         <CardContent>
           {!isReviewing ? (
@@ -186,110 +186,83 @@ return (
             </>
           ) : (
             <>
-  <Typography variant="h6" fontWeight="bold" mb={1}>
-    Review Votes
-  </Typography>
-  <Box height="2px" width="100%" bgcolor="#EDEDED" mb={3} />
+            <Typography variant="h6" fontWeight="bold" mb={1}>
+  Review Votes
+</Typography>
+<Box height="2px" width="100%" bgcolor="#EDEDED" mb={3} />
 
-  <Box>
-    {positions.map((position) => {
-      const candidateName = votes[position];
-      const candidate = grouped[position].find(c => c.name === candidateName);
+{/* Scrollable List Box */}
+<Box
+  sx={{
+    maxHeight: 300,
+    overflowY: 'auto',
+    pr: 1,
+    mb: 2
+  }}
+>
+  {positions.map((position) => {
+    const candidateName = votes[position];
+    const candidate = grouped[position].find(c => c.name === candidateName);
 
-      return (
-        <Box key={position} mb={3}>
-          <Typography variant="subtitle1" fontWeight="500">{position}</Typography>
-          {candidate ? (
-            <Box display="flex" alignItems="center" gap={1} mt={0.5}>
-              <img
-                src={candidate.img}
-                alt={candidate.name}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: '50%',
-                  objectFit: 'cover'
-                }}
-              />
-              <Typography>{candidate.name}</Typography>
-            </Box>
-          ) : (
-            <Typography color="text.secondary" fontStyle="italic">No vote cast</Typography>
-          )}
-        </Box>
-      );
-    })}
-  </Box>
+    return (
+      <Box key={position} mb={3}>
+        <Typography variant="subtitle1" fontWeight="500">{position}</Typography>
+        {candidate ? (
+          <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+            <img
+              src={candidate.img}
+              alt={candidate.name}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                objectFit: 'cover'
+              }}
+            />
+            <Typography>{candidate.name}</Typography>
+          </Box>
+        ) : (
+          <Typography color="text.secondary" fontStyle="italic">No vote cast</Typography>
+        )}
+      </Box>
+    );
+  })}
+</Box>
 
-  <Box display="flex" justifyContent="space-between" mt={4}>
-    <Button
-      variant="outlined"
-      onClick={() => {
-        setIsReviewing(false);
-        setCurrentPositionIndex(positions.length - 1);
-      }}
-      sx={{
-        borderRadius: '8px',
-        textTransform: 'none',
-        px: 4
-      }}
-    >
-      Back
-    </Button>
-    <Button
-      variant="contained"
-      onClick={handleFinalSubmit}
-      sx={{
-        backgroundColor: '#FFD700',
-        color: '#000',
-        borderRadius: '8px',
-        textTransform: 'none',
-        px: 4,
-        '&:hover': {
-          backgroundColor: '#FFEB3B'
-        }
-      }}
-    >
-      Submit
-    </Button>
-  </Box>
+<Box display="flex" justifyContent="space-between" mt={4}>
+  <Button
+    variant="outlined"
+    onClick={() => {
+      setIsReviewing(false);
+      setCurrentPositionIndex(positions.length - 1);
+    }}
+    sx={{
+      borderRadius: '8px',
+      textTransform: 'none',
+      px: 4
+    }}
+  >
+    Back
+  </Button>
+  <Button
+    variant="contained"
+    onClick={handleFinalSubmit}
+    sx={{
+      backgroundColor: '#FFD700',
+      color: '#000',
+      borderRadius: '8px',
+      textTransform: 'none',
+      px: 4,
+      '&:hover': {
+        backgroundColor: '#FFEB3B'
+      }
+    }}
+  >
+    Submit
+  </Button>
+</Box>
+
 </>
-
-
-            // <>
-            //   <Typography variant="h5" align="center" gutterBottom>
-            //     Review Your Votes
-            //   </Typography>
-            //   <List>
-            //     {positions.map((position) => (
-            //       <ListItem key={position}>
-            //         <ListItemText
-            //           primary={position}
-            //           secondary={votes[position] || 'No vote cast'}
-            //         />
-            //       </ListItem>
-            //     ))}
-            //   </List>
-
-            //   <Box display="flex" justifyContent="space-between" mt={3}>
-            //     <Button
-            //       variant="outlined"
-            //       onClick={() => {
-            //         setIsReviewing(false);
-            //         setCurrentPositionIndex(positions.length - 1);
-            //       }}
-            //     >
-            //       Back to Last Vote
-            //     </Button>
-            //     <Button
-            //       variant="contained"
-            //       color="success"
-            //       onClick={handleFinalSubmit}
-            //     >
-            //       Confirm & Submit
-            //     </Button>
-            //   </Box>
-            // </>
           )}
         </CardContent>
       </Card>

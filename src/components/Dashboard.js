@@ -4,8 +4,15 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid
+  Grid,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import AdminLayout from './layout/AdminLayout';
 import { AuthContext } from '../context/AuthContext';
 import Drawer from '@mui/material/Drawer';
@@ -24,6 +31,11 @@ const drawerWidth = 240;
 
 export default function Dashboard() {
   const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleVote = () => {
+    navigate('/voting-instructions')
+  }
 
   // Voter View
   if (user?.role === 'voter') {
@@ -86,10 +98,10 @@ export default function Dashboard() {
                 text: 'After voting ends, votes are counted, results are declared, and new leaders are announced.',
                 bg: '#FAD4D4'
               },
-              {
-                text: 'Think about leadership, character, and vision—not just popularity. Your Vote determines your next set of leaders.',
-                bg: '#C2FCAD'
-              }
+              // {
+              //   text: 'Think about leadership, character, and vision—not just popularity. Your Vote determines your next set of leaders.',
+              //   bg: '#C2FCAD'
+              // }
             ].map((card, index) => (
               <Card key={index} sx={{ minWidth: 300, backgroundColor: card.bg, borderRadius: 3, p: 2 }}>
                 <Typography align="center" fontWeight="500">
@@ -104,6 +116,30 @@ export default function Dashboard() {
             12 : 10 : 45 : 15
           </Typography>
           <Typography variant="caption">D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography>
+
+          <Box
+            display='flex' 
+            justifyContent='space-between' 
+            alignItems='center'
+            mt={4}
+          >
+            <Typography>Your vote is your power. Step up and decide the future - Cast Now.</Typography>
+            <Button
+              onClick={handleVote}
+              variant='contained'
+              sx={{
+                px: 6,
+                backgroundColor: '#FFD500',
+                color: '#000',
+                borderRadius: 2,
+                '&:hover': {
+                  backgroundColor: '#FFE452',
+                },
+              }}
+            >
+              Vote
+            </Button>
+          </Box>
         </Box>
       </Box>
     );
@@ -152,6 +188,67 @@ export default function Dashboard() {
       <Typography variant="caption" letterSpacing={15} pl={3}>D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography>
       </Box>
       </Box>
+
+      {/* Recently Added Section */}
+    <Box mt={5}>
+      <Typography variant="h6" gutterBottom>Recently Added</Typography>
+
+      {[
+        {
+          name: 'Adeleke Hussein Chidinma Sapphire',
+          position: 'Laboratory Prefect',
+          img: 'https://randomuser.me/api/portraits/women/44.jpg'
+        },
+        {
+          name: 'Adeleke Hussein Chidinma Sapphire',
+          position: 'Laboratory Prefect',
+          img: 'https://randomuser.me/api/portraits/women/44.jpg'
+        },
+        {
+          name: 'Adeleke Hussein Chidinma Sapphire',
+          position: 'Laboratory Prefect',
+          img: 'https://randomuser.me/api/portraits/women/44.jpg'
+        }
+      ].map((item, index) => (
+        <>
+        <Box
+          key={index}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          py={1}
+          px={2}
+          sx={{
+            borderBottom: index < 2 ? '1px solid #f0f0f0' : 'none',
+            backgroundColor: index % 2 === 1 ? '#FAFAFA' : 'transparent'
+          }}
+        >
+          <Box display="flex" alignItems="center" gap={2}>
+            <img
+              src={item.img}
+              alt={item.name}
+              style={{ width: 36, height: 36, borderRadius: '50%' }}
+            />
+            <Typography variant="body1">{item.name}</Typography>
+          </Box>
+          <Typography variant="body2" color="text.secondary">{item.position}</Typography>
+        </Box>
+        
+        </>
+      ))}
+    </Box>
+    <Box maxWidth="lg">
+    <TableContainer>
+      <TableHead>
+        <TableRow>
+          <TableCell>Photo</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Position</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody></TableBody>
+    </TableContainer>
+    </Box>
     </AdminLayout>
   );
 }
