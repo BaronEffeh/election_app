@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
     const isAdmin = serialNumber === 'ADMIN123';
     const mockUser = isAdmin
       ? { name: 'Admin User', role: 'admin' }
-      : { name: 'Voter User', role: 'voter' };
+      : { name: 'Adeleke Hussein', role: 'voter' };
 
     setUser(mockUser);
     return true;

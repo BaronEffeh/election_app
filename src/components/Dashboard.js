@@ -5,16 +5,17 @@ import {
   Card,
   CardContent,
   Grid,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
+  // TableContainer,
+  // TableHead,
+  // TableRow,
+  // TableCell,
+  // TableBody,
   Button
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from './layout/AdminLayout';
 import { AuthContext } from '../context/AuthContext';
+import { ElectionContext } from '../context/ElectionContext';
+import AdminLayout from './layout/AdminLayout';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -33,9 +34,15 @@ export default function Dashboard() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const { countdown } = useContext(ElectionContext);
+
   const handleVote = () => {
     navigate('/voting-instructions')
-  }
+  };
+
+  const handleLogout = () => {
+    navigate('/');
+  };
 
   // Voter View
   if (user?.role === 'voter') {
@@ -61,7 +68,7 @@ export default function Dashboard() {
             </Box>
             <Divider />
             <List>
-              <ListItem button>
+              <ListItem button sx={{cursor: 'pointer'}}>
                 <ListItemIcon sx={{color: '#DA5050'}}><DashboardIcon /></ListItemIcon>
                 <ListItemText sx={{color: '#DA5050'}} primary="Dashboard" />
               </ListItem>
@@ -70,7 +77,7 @@ export default function Dashboard() {
           <Box>
             <Divider />
             <List>
-              <ListItem button onClick={logout}>
+              <ListItem button onClick={handleLogout || logout} sx={{cursor: 'pointer'}}>
                 <ListItemIcon><LogoutIcon /></ListItemIcon>
                 <ListItemText primary="Logout" />
               </ListItem>
@@ -103,7 +110,7 @@ export default function Dashboard() {
               //   bg: '#C2FCAD'
               // }
             ].map((card, index) => (
-              <Card key={index} sx={{ minWidth: 300, backgroundColor: card.bg, borderRadius: 3, p: 2 }}>
+              <Card key={index} sx={{ minWidth: 250, backgroundColor: card.bg, borderRadius: 3, p: 2 }}>
                 <Typography align="center" fontWeight="500">
                   {card.text}
                 </Typography>
@@ -111,11 +118,22 @@ export default function Dashboard() {
             ))}
           </Box>
 
-          <Typography variant="h6" mt={5}>Voting Begins in</Typography>
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Box>
+              <Typography variant="h6" mt={5}>Voting Begins in:</Typography>
+            </Box>
+            <Box>
+              <Typography variant="h3" fontWeight="bold" marginTop={5}>
+                {countdown}
+              </Typography>
+              <Typography variant="caption" letterSpacing={15} pl={3}>D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography>
+            </Box>
+          </Box>
+          {/* <Typography variant="h6" mt={5}>Voting Begins in</Typography>
           <Typography variant="h3" fontWeight="bold">
-            12 : 10 : 45 : 15
+            {countdown}
           </Typography>
-          <Typography variant="caption">D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography>
+          <Typography variant="caption">D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography> */}
 
           <Box
             display='flex' 
@@ -183,7 +201,7 @@ export default function Dashboard() {
       </Box>
       <Box>
       <Typography variant="h3" fontWeight="bold" marginTop={5}>
-        12 : 10 : 45 : 15
+        {countdown}
       </Typography>
       <Typography variant="caption" letterSpacing={15} pl={3}>D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography>
       </Box>
@@ -236,18 +254,6 @@ export default function Dashboard() {
         
         </>
       ))}
-    </Box>
-    <Box maxWidth="lg">
-    <TableContainer>
-      <TableHead>
-        <TableRow>
-          <TableCell>Photo</TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Position</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody></TableBody>
-    </TableContainer>
     </Box>
     </AdminLayout>
   );

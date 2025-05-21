@@ -86,7 +86,7 @@ export default function ViewVoters() {
       <TableContainer
           sx={{
             borderRadius: 2,
-            maxHeight: 400,
+            maxHeight: 380,
             overflowY: 'auto'
           }}
         >

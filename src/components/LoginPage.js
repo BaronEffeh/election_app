@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/BSA_logo.png';
-import LoginImage from '../assets/bg-img.png';
+import LoginImage from '../assets/bg-img2.png';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {

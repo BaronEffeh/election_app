@@ -12,12 +12,14 @@ import ViewVoters from './components/admin/ViewVoters';
 import ManageElection from './components/admin/ManageElection';
 import VoteNow from './components/voter/VoteNow';
 import { AuthProvider } from './context/AuthContext';
+import { ElectionProvider } from './context/ElectionContext';
 import ElectionReport from './components/admin/ElectionReport';
 import VotingInstructions from './components/voter/VotingInstructions';
 
 function App() {
   return (
     <AuthProvider>
+      <ElectionProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
@@ -32,6 +34,7 @@ function App() {
           <Route path='/voting-instructions' element={<VotingInstructions />} />
         </Routes>
       </Router>
+      </ElectionProvider>
     </AuthProvider>
   );
 }

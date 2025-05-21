@@ -108,7 +108,7 @@ export default function ViewCandidates() {
         <TableContainer
           sx={{
             borderRadius: 2,
-            maxHeight: 400,
+            maxHeight: 340,
             overflowY: 'auto',
           }}
         >

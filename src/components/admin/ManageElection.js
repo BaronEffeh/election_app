@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Typography,
   TextField,
@@ -7,19 +7,51 @@ import {
   Divider
 } from '@mui/material';
 import AdminLayout from '../layout/AdminLayout';
+import { ElectionContext } from '../../context/ElectionContext';
 
 export default function ManageElection() {
   const [electionDate, setElectionDate] = useState('');
   const [electionTime, setElectionTime] = useState('');
   const [processTime, setProcessTime] = useState('');
   const [electionStarted, setElectionStarted] = useState(false);
+  const [countdown, setCountdown] = useState('');
+
+  const { electionDateTime, setElectionDateTime } = useContext(ElectionContext);
+
+  // Countdown timer effect
+  useEffect(() => {
+    let timer;
+    if (electionDateTime) {
+      timer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = new Date(electionDateTime).getTime() - now;
+
+        if (distance <= 0) {
+          clearInterval(timer);
+          setCountdown('00d : 00h : 00m : 00s');
+        } else {
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          setCountdown(
+            `${String(days).padStart(2, '0')}d : ${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}m : ${String(seconds).padStart(2, '0')}s`
+          );
+        }
+      }, 1000);
+    }
+
+    return () => clearInterval(timer);
+  }, [electionDateTime]);
 
   const handleSetElectionDate = () => {
     if (!electionDate || !electionTime) {
       alert('Please enter both date and time.');
       return;
     }
-    alert(`Election date set to ${electionDate} ${electionTime}`);
+    const fullDateTime = `${electionDate}T${electionTime}`;
+    setElectionDateTime(fullDateTime);
+    alert(`Election date set to ${fullDateTime}`);
   };
 
   const handleStartElection = () => {
@@ -63,6 +95,7 @@ export default function ManageElection() {
             />
             <Button
               variant="contained"
+              onClick={handleSetElectionDate}
               sx={{
                 backgroundColor: '#F5F5F5',
                 color: '#000',
@@ -71,12 +104,18 @@ export default function ManageElection() {
                   backgroundColor: '#e0e0e0'
                 }
               }}
-              onClick={handleSetElectionDate}
             >
               Set
             </Button>
           </Box>
         </Box>
+
+        {/* Countdown display */}
+        {electionDateTime && (
+          <Typography variant="body1" fontWeight="bold" mt={1} mb={3}>
+            Countdown to Election: {countdown}
+          </Typography>
+        )}
 
         <Divider sx={{ my: 3 }} />
 
@@ -116,6 +155,294 @@ export default function ManageElection() {
     </AdminLayout>
   );
 }
+
+
+
+
+
+// import React, { useState, useEffect, useContext } from 'react';
+// import {
+//   Typography,
+//   TextField,
+//   Button,
+//   Box,
+//   Divider
+// } from '@mui/material';
+// import AdminLayout from '../layout/AdminLayout';
+// import { ElectionContext } from '../../context/ElectionContext';
+
+// export default function ManageElection() {
+//   const [electionDate, setElectionDate] = useState('');
+//   const [electionTime, setElectionTime] = useState('');
+//   const [countdown, setCountdown] = useState('');
+//   const [processTime, setProcessTime] = useState('');
+//   const [electionStarted, setElectionStarted] = useState(false);
+//   // const [electionDateTime, setElectionDateTime] = useState(null);
+//   const {setElectionDateTime} = useContext(ElectionContext);
+
+//   // Countdown timer
+//   useEffect(() => {
+//     let timer;
+//     if (electionDateTime) {
+//       timer = setInterval(() => {
+//         const now = new Date().getTime();
+//         const distance = new Date(electionDateTime).getTime() - now;
+
+//         if (distance <= 0) {
+//           clearInterval(timer);
+//           setCountdown('00d : 00h : 00m : 00s');
+//         } else {
+//           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//           setCountdown(
+//             `${String(days).padStart(2, '0')}d : ${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}m : ${String(seconds).padStart(2, '0')}s`
+//           );
+//         }
+//       }, 1000);
+//     }
+
+//     return () => clearInterval(timer);
+//   }, [electionDateTime]);
+
+//   const handleSetElectionDate = () => {
+//     if (!electionDate || !electionTime) {
+//       alert('Please enter both date and time.');
+//       return;
+//     }
+//     const fullDateTime = `${electionDate}T${electionTime}`;
+//   setElectionDateTime(fullDateTime); // Set globally
+//   alert(`Election date set to ${fullDateTime}`);
+//     // const dateTime = new Date(`${electionDate}T${electionTime}`);
+//     // setElectionDateTime(dateTime);
+//     // alert(`Election date set to ${dateTime}`);
+//   };
+
+//   const handleStartElection = () => {
+//     if (!processTime) {
+//       alert('Please enter the election start time.');
+//       return;
+//     }
+//     setElectionStarted(true);
+//     alert('Election process started!');
+//   };
+
+//   return (
+//     <AdminLayout>
+//       <Box sx={{ p: 3 }}>
+//         <Typography variant="h6" fontWeight="bold" mb={1}>
+//           Manage Elections
+//         </Typography>
+//         <Divider sx={{ mb: 3 }} />
+
+//         {/* Set Election Date Row */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//           mb={2}
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Set Election Date</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="date"
+//               size="small"
+//               value={electionDate}
+//               onChange={(e) => setElectionDate(e.target.value)}
+//             />
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={electionTime}
+//               onChange={(e) => setElectionTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               sx={{
+//                 backgroundColor: '#F5F5F5',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': {
+//                   backgroundColor: '#e0e0e0'
+//                 }
+//               }}
+//               onClick={handleSetElectionDate}
+//             >
+//               Set
+//             </Button>
+//           </Box>
+//         </Box>
+
+//         {/* Countdown display */}
+//         {electionDateTime && (
+//           <Typography variant="body1" fontWeight="bold" mt={1} mb={3}>
+//             Countdown to Election: {countdown}
+//           </Typography>
+//         )}
+
+//         <Divider sx={{ my: 3 }} />
+
+//         {/* Election Process Row */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Election Process</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={processTime}
+//               onChange={(e) => setProcessTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               disabled={electionStarted}
+//               onClick={handleStartElection}
+//               sx={{
+//                 backgroundColor: '#FFD700',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': {
+//                   backgroundColor: '#FFEB3B'
+//                 }
+//               }}
+//             >
+//               Start
+//             </Button>
+//           </Box>
+//         </Box>
+//       </Box>
+//     </AdminLayout>
+//   );
+// }
+
+
+
+
+
+// import React, { useState } from 'react';
+// import {
+//   Typography,
+//   TextField,
+//   Button,
+//   Box,
+//   Divider
+// } from '@mui/material';
+// import AdminLayout from '../layout/AdminLayout';
+
+// export default function ManageElection() {
+//   const [electionDate, setElectionDate] = useState('');
+//   const [electionTime, setElectionTime] = useState('');
+//   const [processTime, setProcessTime] = useState('');
+//   const [electionStarted, setElectionStarted] = useState(false);
+
+//   const handleSetElectionDate = () => {
+//     if (!electionDate || !electionTime) {
+//       alert('Please enter both date and time.');
+//       return;
+//     }
+//     alert(`Election date set to ${electionDate} ${electionTime}`);
+//   };
+
+//   const handleStartElection = () => {
+//     if (!processTime) {
+//       alert('Please enter the election start time.');
+//       return;
+//     }
+//     setElectionStarted(true);
+//     alert('Election process started!');
+//   };
+
+//   return (
+//     <AdminLayout>
+//       <Box sx={{ p: 3 }}>
+//         <Typography variant="h6" fontWeight="bold" mb={1}>
+//           Manage Elections
+//         </Typography>
+//         <Divider sx={{ mb: 3 }} />
+
+//         {/* Set Election Date Row */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//           mb={2}
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Set Election Date</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="date"
+//               size="small"
+//               value={electionDate}
+//               onChange={(e) => setElectionDate(e.target.value)}
+//             />
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={electionTime}
+//               onChange={(e) => setElectionTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               sx={{
+//                 backgroundColor: '#F5F5F5',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': {
+//                   backgroundColor: '#e0e0e0'
+//                 }
+//               }}
+//               onClick={handleSetElectionDate}
+//             >
+//               Set
+//             </Button>
+//           </Box>
+//         </Box>
+
+//         <Divider sx={{ my: 3 }} />
+
+//         {/* Election Process Row */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Election Process</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={processTime}
+//               onChange={(e) => setProcessTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               disabled={electionStarted}
+//               onClick={handleStartElection}
+//               sx={{
+//                 backgroundColor: '#FFD700',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': {
+//                   backgroundColor: '#FFEB3B'
+//                 }
+//               }}
+//             >
+//               Start
+//             </Button>
+//           </Box>
+//         </Box>
+//       </Box>
+//     </AdminLayout>
+//   );
+// }
 
 
 
