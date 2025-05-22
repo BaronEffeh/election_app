@@ -27,6 +27,7 @@ import {
   Logout as LogoutIcon
 } from '@mui/icons-material';
 import Logo from '../assets/BSA_logo.png';
+import CountdownTimer from './layout/CountdownTimer';
 
 const drawerWidth = 240;
 
@@ -187,10 +188,10 @@ export default function Dashboard() {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <Card sx={{ width: 292, height: 150, borderRadius: 5, border: 'solid 1px #000000', backgroundColor: '#FDFDFC' }}>
+          <Card sx={{ width: 292, height: 150, borderRadius: 5, border: 'solid 1px #E89393', backgroundColor: '#F5FCAD' }}>
             <CardContent align="center">
               <Typography variant="h3" fontWeight="400">0</Typography>
-              <Typography variant="h6">Open Positions Available</Typography>
+              <Typography variant="h6">Number of Positions</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -201,9 +202,10 @@ export default function Dashboard() {
       </Box>
       <Box>
       <Typography variant="h3" fontWeight="bold" marginTop={5}>
-        {countdown}
+        <CountdownTimer />
+        {/* {countdown} */}
       </Typography>
-      <Typography variant="caption" letterSpacing={15} pl={3}>D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography>
+      {/* <Typography variant="caption" letterSpacing={15} pl={3}>D &nbsp;&nbsp; H &nbsp;&nbsp; M &nbsp;&nbsp; S</Typography> */}
       </Box>
       </Box>
 

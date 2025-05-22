@@ -15,7 +15,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ElectionProvider } from './context/ElectionContext';
 import ElectionReport from './components/admin/ElectionReport';
 import VotingInstructions from './components/voter/VotingInstructions';
-
+import Positions from './components/admin/Positions';
 function App() {
   return (
     <AuthProvider>
@@ -32,6 +32,7 @@ function App() {
           <Route path="/election-report" element={<ElectionReport />} />
           <Route path="/vote-now" element={<VoteNow />} />
           <Route path='/voting-instructions' element={<VotingInstructions />} />
+          <Route path='/position' element={<Positions />} />
         </Routes>
       </Router>
       </ElectionProvider>

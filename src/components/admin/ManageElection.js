@@ -12,13 +12,18 @@ import { ElectionContext } from '../../context/ElectionContext';
 export default function ManageElection() {
   const [electionDate, setElectionDate] = useState('');
   const [electionTime, setElectionTime] = useState('');
-  const [processTime, setProcessTime] = useState('');
-  const [electionStarted, setElectionStarted] = useState(false);
+  const [duration, setDuration] = useState(''); // in minutes
   const [countdown, setCountdown] = useState('');
+  const [processCountdown, setProcessCountdown] = useState('');
 
-  const { electionDateTime, setElectionDateTime } = useContext(ElectionContext);
+  const {
+    electionDateTime,
+    setElectionDateTime,
+    processEndTime,
+    setProcessEndTime
+  } = useContext(ElectionContext);
 
-  // Countdown timer effect
+  // Countdown to election start
   useEffect(() => {
     let timer;
     if (electionDateTime) {
@@ -28,14 +33,14 @@ export default function ManageElection() {
 
         if (distance <= 0) {
           clearInterval(timer);
-          setCountdown('00d : 00h : 00m : 00s');
+          setCountdown('00D : 00H : 00M : 00S');
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
           setCountdown(
-            `${String(days).padStart(2, '0')}d : ${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}m : ${String(seconds).padStart(2, '0')}s`
+            `${String(days).padStart(2, '0')}D : ${String(hours).padStart(2, '0')}H : ${String(minutes).padStart(2, '0')}M : ${String(seconds).padStart(2, '0')}S`
           );
         }
       }, 1000);
@@ -43,6 +48,32 @@ export default function ManageElection() {
 
     return () => clearInterval(timer);
   }, [electionDateTime]);
+
+  // Countdown for election process duration
+  useEffect(() => {
+    let processTimer;
+    if (processEndTime) {
+      processTimer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = new Date(processEndTime).getTime() - now;
+
+        if (distance <= 0) {
+          clearInterval(processTimer);
+          setProcessCountdown('00D : 00H : 00M : 00S');
+        } else {
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          setProcessCountdown(
+            `${String(days).padStart(2, '0')}D : ${String(hours).padStart(2, '0')}H : ${String(minutes).padStart(2, '0')}M : ${String(seconds).padStart(2, '0')}S`
+          );
+        }
+      }, 1000);
+    }
+
+    return () => clearInterval(processTimer);
+  }, [processEndTime]);
 
   const handleSetElectionDate = () => {
     if (!electionDate || !electionTime) {
@@ -55,12 +86,14 @@ export default function ManageElection() {
   };
 
   const handleStartElection = () => {
-    if (!processTime) {
-      alert('Please enter the election start time.');
+    if (!duration || isNaN(duration)) {
+      alert('Please enter a valid duration in minutes.');
       return;
     }
-    setElectionStarted(true);
-    alert('Election process started!');
+    const now = new Date();
+    const endTime = new Date(now.getTime() + Number(duration) * 60000);
+    setProcessEndTime(endTime.toISOString());
+    alert(`Election process started for ${duration} minutes.`);
   };
 
   return (
@@ -71,7 +104,7 @@ export default function ManageElection() {
         </Typography>
         <Divider sx={{ mb: 3 }} />
 
-        {/* Set Election Date Row */}
+        {/* Set Election Date */}
         <Box
           display="flex"
           alignItems="center"
@@ -100,9 +133,7 @@ export default function ManageElection() {
                 backgroundColor: '#F5F5F5',
                 color: '#000',
                 textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: '#e0e0e0'
-                }
+                '&:hover': { backgroundColor: '#e0e0e0' }
               }}
             >
               Set
@@ -110,7 +141,6 @@ export default function ManageElection() {
           </Box>
         </Box>
 
-        {/* Countdown display */}
         {electionDateTime && (
           <Typography variant="body1" fontWeight="bold" mt={1} mb={3}>
             Countdown to Election: {countdown}
@@ -119,42 +149,412 @@ export default function ManageElection() {
 
         <Divider sx={{ my: 3 }} />
 
-        {/* Election Process Row */}
+        {/* Election Duration */}
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
           flexWrap="wrap"
         >
-          <Typography sx={{ minWidth: 160 }}>Election Process</Typography>
+          <Typography sx={{ minWidth: 160 }}>Election Duration (in minutes)</Typography>
           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
             <TextField
-              type="time"
+              type="number"
               size="small"
-              value={processTime}
-              onChange={(e) => setProcessTime(e.target.value)}
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder="e.g. 240"
             />
             <Button
               variant="contained"
-              disabled={electionStarted}
               onClick={handleStartElection}
               sx={{
                 backgroundColor: '#FFD700',
                 color: '#000',
                 textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: '#FFEB3B'
-                }
+                '&:hover': { backgroundColor: '#FFEB3B' }
               }}
             >
               Start
             </Button>
           </Box>
         </Box>
+
+        {processEndTime && (
+          <Typography variant="body1" fontWeight="bold" mt={3}>
+            Election Ends In: {processCountdown}
+          </Typography>
+        )}
       </Box>
     </AdminLayout>
   );
 }
+
+
+
+
+
+
+// import React, { useState, useEffect, useContext } from 'react';
+// import {
+//   Typography,
+//   TextField,
+//   Button,
+//   Box,
+//   Divider
+// } from '@mui/material';
+// import AdminLayout from '../layout/AdminLayout';
+// import { ElectionContext } from '../../context/ElectionContext';
+
+// export default function ManageElection() {
+//   const [electionDate, setElectionDate] = useState('');
+//   const [electionTime, setElectionTime] = useState('');
+//   const [duration, setDuration] = useState(''); // in minutes
+//   const [electionStarted, setElectionStarted] = useState(false);
+//   const [countdown, setCountdown] = useState('');
+//   const [processCountdown, setProcessCountdown] = useState('');
+//   const [processEndTime, setProcessEndTime] = useState(null);
+//   const [processDuration, setProcessDuration] = useState('');
+
+//   const { electionDateTime, setElectionDateTime } = useContext(ElectionContext);
+
+//   // Countdown to election start
+//   useEffect(() => {
+//     let timer;
+//     if (electionDateTime) {
+//       timer = setInterval(() => {
+//         const now = new Date().getTime();
+//         const distance = new Date(electionDateTime).getTime() - now;
+
+//         if (distance <= 0) {
+//           clearInterval(timer);
+//           setCountdown('00D : 00H : 00M : 00S');
+//         } else {
+//           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//           setCountdown(
+//             `${String(days).padStart(2, '0')}D : ${String(hours).padStart(2, '0')}H : ${String(minutes).padStart(2, '0')}M : ${String(seconds).padStart(2, '0')}S`
+//           );
+//         }
+//       }, 1000);
+//     }
+
+//     return () => clearInterval(timer);
+//   }, [electionDateTime]);
+
+//   // Countdown for election process
+//   useEffect(() => {
+//     let processTimer;
+//     if (electionStarted && processEndTime) {
+//       processTimer = setInterval(() => {
+//         const now = new Date().getTime();
+//         const distance = new Date(processEndTime).getTime() - now;
+
+//         if (distance <= 0) {
+//           clearInterval(processTimer);
+//           setProcessCountdown('00D : 00H : 00M : 00S');
+//         } else {
+//           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//           setProcessCountdown(
+//             `${String(days).padStart(2, '0')}D : ${String(hours).padStart(2, '0')}H : ${String(minutes).padStart(2, '0')}M : ${String(seconds).padStart(2, '0')}S`
+//           );
+//         }
+//       }, 1000);
+//     }
+
+//     return () => clearInterval(processTimer);
+//   }, [electionStarted, processEndTime]);
+
+//   const handleSetElectionDate = () => {
+//     if (!electionDate || !electionTime) {
+//       alert('Please enter both date and time.');
+//       return;
+//     }
+//     const fullDateTime = `${electionDate}T${electionTime}`;
+//     setElectionDateTime(fullDateTime);
+//     alert(`Election date set to ${fullDateTime}`);
+//   };
+
+//   const handleStartElection = () => {
+//   if (!processDuration || isNaN(processDuration)) {
+//     alert('Please enter the duration in minutes.');
+//     return;
+//   }
+
+//   const now = new Date();
+//   const endTime = new Date(now.getTime() + Number(processDuration) * 60000);
+//   setProcessEndTime(endTime.toISOString());
+//   alert(`Election process started for ${processDuration} minutes.`);
+//   setElectionStarted(true);
+// };
+//   //   const now = new Date();
+//   //   const end = new Date(now.getTime() + parseInt(duration) * 60 * 1000); // add minutes
+//   //   setProcessEndTime(end);
+//   //   setElectionStarted(true);
+//   //   alert(`Election process started for ${duration} minutes`);
+//   // };
+
+//   return (
+//     <AdminLayout>
+//       <Box sx={{ p: 3 }}>
+//         <Typography variant="h6" fontWeight="bold" mb={1}>
+//           Manage Elections
+//         </Typography>
+//         <Divider sx={{ mb: 3 }} />
+
+//         {/* Set Election Date */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//           mb={2}
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Set Election Date</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="date"
+//               size="small"
+//               value={electionDate}
+//               onChange={(e) => setElectionDate(e.target.value)}
+//             />
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={electionTime}
+//               onChange={(e) => setElectionTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               onClick={handleSetElectionDate}
+//               sx={{
+//                 backgroundColor: '#F5F5F5',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': { backgroundColor: '#e0e0e0' }
+//               }}
+//             >
+//               Set
+//             </Button>
+//           </Box>
+//         </Box>
+
+//         {electionDateTime && (
+//           <Typography variant="body1" fontWeight="bold" mt={1} mb={3}>
+//             Countdown to Election: {countdown}
+//           </Typography>
+//         )}
+
+//         <Divider sx={{ my: 3 }} />
+
+//         {/* Election Process Time */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Election Duration (in minutes)</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="number"
+//               size="small"
+//               value={duration}
+//               onChange={(e) => setDuration(e.target.value)}
+//               placeholder="e.g. 240"
+//             />
+//             <Button
+//               variant="contained"
+//               disabled={electionStarted}
+//               onClick={handleStartElection}
+//               sx={{
+//                 backgroundColor: '#FFD700',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': { backgroundColor: '#FFEB3B' }
+//               }}
+//             >
+//               Start
+//             </Button>
+//           </Box>
+//         </Box>
+
+//         {electionStarted && processEndTime && (
+//           <Typography variant="body1" fontWeight="bold" mt={3}>
+//             Election Ends In: {processCountdown}
+//           </Typography>
+//         )}
+//       </Box>
+//     </AdminLayout>
+//   );
+// }
+
+
+
+
+
+// import React, { useState, useEffect, useContext } from 'react';
+// import {
+//   Typography,
+//   TextField,
+//   Button,
+//   Box,
+//   Divider
+// } from '@mui/material';
+// import AdminLayout from '../layout/AdminLayout';
+// import { ElectionContext } from '../../context/ElectionContext';
+
+// export default function ManageElection() {
+//   const [electionDate, setElectionDate] = useState('');
+//   const [electionTime, setElectionTime] = useState('');
+//   const [processTime, setProcessTime] = useState('');
+//   const [electionStarted, setElectionStarted] = useState(false);
+//   const [countdown, setCountdown] = useState('');
+
+//   const { electionDateTime, setElectionDateTime } = useContext(ElectionContext);
+
+//   // Countdown timer effect
+//   useEffect(() => {
+//     let timer;
+//     if (electionDateTime) {
+//       timer = setInterval(() => {
+//         const now = new Date().getTime();
+//         const distance = new Date(electionDateTime).getTime() - now;
+
+//         if (distance <= 0) {
+//           clearInterval(timer);
+//           setCountdown('00D : 00H : 00M : 00S');
+//         } else {
+//           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//           setCountdown(
+//             `${String(days).padStart(2, '0')}D : ${String(hours).padStart(2, '0')}H : ${String(minutes).padStart(2, '0')}M : ${String(seconds).padStart(2, '0')}S`
+//           );
+//         }
+//       }, 1000);
+//     }
+
+//     return () => clearInterval(timer);
+//   }, [electionDateTime]);
+
+//   const handleSetElectionDate = () => {
+//     if (!electionDate || !electionTime) {
+//       alert('Please enter both date and time.');
+//       return;
+//     }
+//     const fullDateTime = `${electionDate}T${electionTime}`;
+//     setElectionDateTime(fullDateTime);
+//     alert(`Election date set to ${fullDateTime}`);
+//   };
+
+//   const handleStartElection = () => {
+//     if (!processTime) {
+//       alert('Please enter the election start time.');
+//       return;
+//     }
+//     setElectionStarted(true);
+//     alert('Election process started!');
+//   };
+
+//   return (
+//     <AdminLayout>
+//       <Box sx={{ p: 3 }}>
+//         <Typography variant="h6" fontWeight="bold" mb={1}>
+//           Manage Elections
+//         </Typography>
+//         <Divider sx={{ mb: 3 }} />
+
+//         {/* Set Election Date Row */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//           mb={2}
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Set Election Date</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="date"
+//               size="small"
+//               value={electionDate}
+//               onChange={(e) => setElectionDate(e.target.value)}
+//             />
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={electionTime}
+//               onChange={(e) => setElectionTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               onClick={handleSetElectionDate}
+//               sx={{
+//                 backgroundColor: '#F5F5F5',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': {
+//                   backgroundColor: '#e0e0e0'
+//                 }
+//               }}
+//             >
+//               Set
+//             </Button>
+//           </Box>
+//         </Box>
+
+//         {/* Countdown display */}
+//         {electionDateTime && (
+//           <Typography variant="body1" fontWeight="bold" mt={1} mb={3}>
+//             Countdown to Election: {countdown}
+//           </Typography>
+//         )}
+
+//         <Divider sx={{ my: 3 }} />
+
+//         {/* Election Process Row */}
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           justifyContent="space-between"
+//           flexWrap="wrap"
+//         >
+//           <Typography sx={{ minWidth: 160 }}>Election Process</Typography>
+//           <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+//             <TextField
+//               type="time"
+//               size="small"
+//               value={processTime}
+//               onChange={(e) => setProcessTime(e.target.value)}
+//             />
+//             <Button
+//               variant="contained"
+//               disabled={electionStarted}
+//               onClick={handleStartElection}
+//               sx={{
+//                 backgroundColor: '#FFD700',
+//                 color: '#000',
+//                 textTransform: 'none',
+//                 '&:hover': {
+//                   backgroundColor: '#FFEB3B'
+//                 }
+//               }}
+//             >
+//               Start
+//             </Button>
+//           </Box>
+//         </Box>
+//       </Box>
+//     </AdminLayout>
+//   );
+// }
 
 
 

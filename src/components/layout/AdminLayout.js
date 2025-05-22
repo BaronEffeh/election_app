@@ -19,6 +19,7 @@ const menuItems = [
   { text: 'Dashboard', icon: <HomeIcon />, path: '/dashboard' },
   { text: 'Candidates', icon: <PersonIcon />, path: '/view-candidates' },
   { text: 'Voters', icon: <HowToRegIcon />, path: '/view-voters' },
+  { text: 'Positions', icon: <HowToRegIcon />, path: '/position' },
   { text: 'Manage Election', icon: <SettingsIcon />, path: '/manage-election' },
 ];
 
