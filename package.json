@@ -9,8 +9,11 @@
     "@mui/material": "^7.0.2",
     "axios": "^1.9.0",
     "cra-template": "1.3.0",
+<<<<<<< HEAD
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
+=======
+>>>>>>> 0d9f54055a232a5a31594f65012f34252deacdb6
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-multi-carousel": "^2.8.6",

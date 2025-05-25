@@ -17,9 +17,15 @@ const drawerWidth = 240;
 
 const menuItems = [
   { text: 'Dashboard', icon: <HomeIcon />, path: '/dashboard' },
+<<<<<<< HEAD
   { text: 'Positions', icon: <HowToRegIcon />, path: '/position' },
   { text: 'Candidates', icon: <PersonIcon />, path: '/view-candidates' },
   { text: 'Voters', icon: <HowToRegIcon />, path: '/view-voters' },
+=======
+  { text: 'Candidates', icon: <PersonIcon />, path: '/view-candidates' },
+  { text: 'Voters', icon: <HowToRegIcon />, path: '/view-voters' },
+  { text: 'Positions', icon: <HowToRegIcon />, path: '/position' },
+>>>>>>> 0d9f54055a232a5a31594f65012f34252deacdb6
   { text: 'Manage Election', icon: <SettingsIcon />, path: '/manage-election' },
 ];
 

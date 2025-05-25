@@ -125,6 +125,7 @@ export default function ViewVoters() {
             }}
           />
 
+<<<<<<< HEAD
           <Box display="flex" gap={2}>
             <Button
               // variant="contained"
@@ -138,6 +139,20 @@ export default function ViewVoters() {
               }}
             >
               Upload Voters
+=======
+          <Box display="flex" gap={1}>
+            <Button
+              variant="contained"
+              component="label"
+              sx={{
+                backgroundColor: '#C3F4CD',
+                color: '#000',
+                textTransform: 'none',
+                '&:hover': { backgroundColor: '#B2ECC3' }
+              }}
+            >
+              Upload CSV
+>>>>>>> 0d9f54055a232a5a31594f65012f34252deacdb6
               <input
                 type="file"
                 accept=".csv"
